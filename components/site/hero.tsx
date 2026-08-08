@@ -112,7 +112,7 @@ export function Hero() {
 
           <motion.h1
             variants={item}
-            className="mt-7 text-[44px] font-black leading-[1.03] tracking-tight sm:text-6xl lg:text-[76px]"
+            className="mt-7 text-[clamp(2.4rem,9vw,4.75rem)] font-black leading-[1.05] tracking-tight"
           >
             Delicious Taste.
             <br />

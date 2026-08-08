@@ -87,7 +87,7 @@ export function DealsSection() {
               return (
                 <div
                   key={deal.id}
-                  className="absolute left-1/2 top-1/2 h-full w-[300px] -translate-x-1/2 -translate-y-1/2 select-none sm:w-[340px] md:w-[380px]"
+                  className="absolute left-1/2 top-1/2 h-full w-[280px] -translate-x-1/2 -translate-y-1/2 select-none sm:w-[340px] md:w-[380px]"
                   style={{
                     zIndex: 100 - distance,
                     visibility: visible ? "visible" : "hidden",

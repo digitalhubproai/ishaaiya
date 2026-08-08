@@ -73,7 +73,7 @@ export function PromoBanner({ banner }: { banner: PromoBanner }) {
 
       {/* watermark */}
       <div
-        className="pointer-events-none absolute -right-8 -top-10 select-none text-[110px] font-black leading-none text-white/[0.06] sm:-right-6 sm:-top-14 sm:text-[180px]"
+        className="pointer-events-none absolute -right-8 -top-10 hidden select-none text-[110px] font-black leading-none text-white/[0.06] sm:block sm:-right-6 sm:-top-14 sm:text-[180px]"
         aria-hidden
       >
         {banner.title.split(" ")[0]}
