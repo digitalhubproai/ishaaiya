@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { UtensilsCrossed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/section-heading";
@@ -11,11 +12,12 @@ import {
   MENU_ITEMS,
   CONTACT,
   PROMO_BANNERS,
+  menuItemSlug,
 } from "@/lib/data";
 import { SPRING } from "@/components/motion/reveal";
 import { AddToCartButton } from "@/components/site/add-to-cart";
 import { PromoBanner } from "@/components/site/promo-banner";
-import { getCategoryIcon } from "@/lib/category-icons";
+import { CATEGORY_ICONS } from "@/lib/category-icons";
 
 function TiltCard({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -52,7 +54,7 @@ function TiltCard({ children }: { children: React.ReactNode }) {
 
 function CategoryBlock({ cat }: { cat: (typeof CATEGORIES)[number] }) {
   const items = MENU_ITEMS.filter((item) => item.category === cat.id);
-  const Icon = getCategoryIcon(cat.id);
+  const Icon = CATEGORY_ICONS[cat.id];
 
   return (
     <div className="mt-16">
@@ -86,7 +88,12 @@ function CategoryBlock({ cat }: { cat: (typeof CATEGORIES)[number] }) {
             >
               <TiltCard>
                 <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-sm transition-colors duration-300 hover:border-orange-500/40 [transform:translateZ(20px)]">
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  <Link
+                    href={`/item/${menuItemSlug(item)}`}
+                    aria-label={`View ${item.name}`}
+                    className="absolute inset-0 z-10"
+                  />
+                  <div className="pointer-events-none relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -107,15 +114,17 @@ function CategoryBlock({ cat }: { cat: (typeof CATEGORIES)[number] }) {
                     <p className="flex-1 text-sm leading-relaxed text-white/50">
                       {item.description}
                     </p>
-                    <AddToCartButton
-                      item={{
-                        id: `menu-${item.id}`,
-                        name: item.name,
-                        price: item.price,
-                        image: item.image,
-                      }}
-                      className="mt-2"
-                    />
+                    <div className="relative z-20">
+                      <AddToCartButton
+                        item={{
+                          id: `menu-${item.id}`,
+                          name: item.name,
+                          price: item.price,
+                          image: item.image,
+                        }}
+                        className="mt-2"
+                      />
+                    </div>
                   </div>
                   <div className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 [background:linear-gradient(120deg,transparent_30%,rgba(255,150,40,0.08)_50%,transparent_70%)]" />
                 </div>

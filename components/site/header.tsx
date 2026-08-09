@@ -19,6 +19,7 @@ import {
   CONTACT,
   CATEGORIES,
   MENU_ITEMS,
+  menuItemSlug,
 } from "@/lib/data";
 import { CATEGORY_ICONS } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
@@ -203,10 +204,10 @@ function MegaMenu() {
                           </div>
                           <div className="grid grid-cols-2 gap-2.5">
                             {searchResults.map((item) => (
-                              <a
+                              <Link
                                 key={item.id}
-                                href="#menu"
-                                onClick={() => setOpen(false)}
+                                href={`/item/${menuItemSlug(item)}`}
+                                onClick={reset}
                                 className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/30 hover:bg-white/[0.06]"
                               >
                                 <Image
@@ -224,7 +225,7 @@ function MegaMenu() {
                                     Rs. {item.price}
                                   </div>
                                 </div>
-                              </a>
+                              </Link>
                             ))}
                           </div>
                           {searchResults.length === 0 && (
@@ -255,10 +256,10 @@ function MegaMenu() {
                           </div>
                           <div className="grid grid-cols-2 gap-2.5">
                             {activeItems.map((item) => (
-                              <a
+                              <Link
                                 key={item.id}
-                                href="#menu"
-                                onClick={() => setOpen(false)}
+                                href={`/item/${menuItemSlug(item)}`}
+                                onClick={reset}
                                 className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/30 hover:bg-white/[0.06]"
                               >
                                 <Image
@@ -276,7 +277,7 @@ function MegaMenu() {
                                     Rs. {item.price}
                                   </div>
                                 </div>
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </motion.div>

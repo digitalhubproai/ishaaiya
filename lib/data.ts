@@ -1,4 +1,29 @@
-﻿export const CONTACT = {
+﻿export function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function menuItemSlug(item: { name: string }) {
+  return slugify(item.name);
+}
+
+export function dealSlug(deal: { title: string }) {
+  return `deal-${slugify(deal.title)}`;
+}
+
+export function findItemBySlug(slug: string) {
+  const deal = DEALS.find((d) => dealSlug(d) === slug);
+  if (deal) return { type: "deal" as const, deal };
+  const item = MENU_ITEMS.find((i) => menuItemSlug(i) === slug);
+  if (item) return { type: "menu" as const, item };
+  return null;
+}
+
+export const CONTACT = {
   whatsapp: "0333-2001695",
   whatsappLink: "https://wa.me/923332001695",
   phone: "0317-1244712",

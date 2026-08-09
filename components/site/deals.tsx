@@ -3,15 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowLeft, ArrowRight, Gauge } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/section-heading";
-import { DEALS, CONTACT } from "@/lib/data";
+import { DEALS, CONTACT, dealSlug } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 import { AddToCartButton } from "@/components/site/add-to-cart";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 const SPRING = { type: "spring", stiffness: 220, damping: 28, mass: 1 } as const;
 
@@ -91,7 +90,10 @@ export function DealsSection() {
                   style={{
                     zIndex: 100 - distance,
                     visibility: visible ? "visible" : "hidden",
-                    pointerEvents: isActive ? "auto" : "none",
+                    pointerEvents: visible ? "auto" : "none",
+                  }}
+                  onClick={() => {
+                    if (!isActive) setActive(i);
                   }}
                 >
                   <motion.div
@@ -124,6 +126,13 @@ export function DealsSection() {
                           : "border-white/10 shadow-black/40"
                       )}
                     >
+                      {isActive && (
+                        <Link
+                          href={`/item/${dealSlug(deal)}`}
+                          aria-label={`View ${deal.title}`}
+                          className="absolute inset-0 z-10"
+                        />
+                      )}
                       {isActive && (
                         <div
                           className="pointer-events-none absolute inset-x-8 top-8 z-10 h-1/2 rounded-full blur-2xl"
@@ -168,7 +177,7 @@ export function DealsSection() {
                         <p className="line-clamp-2 text-sm leading-relaxed text-white/50">
                           {deal.description}
                         </p>
-                        <div className="mt-auto flex gap-2">
+                        <div className="relative z-20 mt-auto flex gap-2">
                           <AddToCartButton
                             item={{
                               id: `deal-${deal.id}`,

@@ -11,16 +11,20 @@ export function AddToCartButton({
   item,
   className,
   full = true,
+  size = "sm",
+  quantity = 1,
 }: {
   item: CartItem;
   className?: string;
   full?: boolean;
+  size?: "sm" | "lg" | "default";
+  quantity?: number;
 }) {
   const { add, setOpen: setCartOpen } = useCart();
   const [added, setAdded] = useState(false);
 
   const handleClick = () => {
-    add(item);
+    add(item, quantity);
     setCartOpen(true);
     setAdded(true);
     setTimeout(() => setAdded(false), 1200);
@@ -30,7 +34,7 @@ export function AddToCartButton({
     <Button
       type="button"
       onClick={handleClick}
-      size="sm"
+      size={size}
       className={cn(
         "gap-2 rounded-full bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30 active:scale-95",
         full && "w-full",

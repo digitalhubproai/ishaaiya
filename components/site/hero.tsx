@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, animate } from "framer-motion";
+import { motion, animate } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,20 @@ const item = {
     y: 0,
     filter: "blur(0px)",
     transition: { duration: 0.7, ease: EASE },
+  },
+};
+
+const titleWrap = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.18, delayChildren: 0.3 } },
+};
+
+const titleLine = {
+  hidden: { y: "115%", filter: "blur(10px)" },
+  show: {
+    y: "0%",
+    filter: "blur(0px)",
+    transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -57,36 +71,65 @@ function AnimatedStat({
 }
 
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const glowOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-
   return (
     <section
       id="home"
-      ref={sectionRef}
       className="relative flex min-h-screen flex-col overflow-hidden bg-[#0d0b09] text-white"
     >
       {/* full-width background image */}
       <div className="absolute inset-0">
-        <motion.div style={{ y: imgY }} className="absolute inset-0 -top-8">
-          <Image
-            src="/heroimage.png"
-            alt="Ishaaiya signature plate"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-        </motion.div>
+        <div className="absolute inset-0 -top-8">
+          <motion.div
+            initial={{ scale: 1.14 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 2.6, ease: EASE }}
+            className="absolute inset-0"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.06, 1] }}
+              transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src="/heroimage.png"
+                alt="Ishaaiya signature plate"
+                fill
+                priority
+                className="object-cover object-center"
+                sizes="100vw"
+              />
+            </motion.div>
+          </motion.div>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0d0b09] via-[#0d0b09]/80 to-[#0d0b09]/30" />
+        <div className="absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(13,11,9,0.6)_100%)]" />
+
+        {/* cinematic light beam sweep */}
         <motion.div
-          style={{ opacity: glowOpacity }}
-          className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0d0b09] to-transparent"
+          aria-hidden
+          initial={{ x: "-130%", opacity: 0 }}
+          animate={{ x: "130%", opacity: [0, 0.9, 0] }}
+          transition={{
+            x: { duration: 2, ease: [0.7, 0, 0.3, 1] as const, delay: 0.9 },
+            opacity: { duration: 2, times: [0, 0.5, 1], delay: 0.9 },
+          }}
+          className="absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-orange-200/20 to-transparent"
+        />
+
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#0d0b09] to-transparent" />
+      </div>
+
+      {/* ambient glow — desktop */}
+      <div className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
+        <motion.div
+          animate={{ y: [0, -26, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-1/4 top-1/4 h-[440px] w-[440px] rounded-full bg-orange-500/15 blur-[140px]"
+        />
+        <motion.div
+          animate={{ y: [0, 22, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-10 right-1/4 h-72 w-72 rounded-full bg-red-700/15 blur-[120px]"
         />
       </div>
 
@@ -111,26 +154,35 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            variants={item}
+            variants={titleWrap}
+            initial="hidden"
+            animate="show"
             className="mt-7 text-[clamp(2.4rem,9vw,4.75rem)] font-black leading-[1.05] tracking-tight"
           >
-            Delicious Taste.
-            <br />
-            <span
-              className="relative inline-block bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent"
-              style={{ backgroundSize: "200% 100%" }}
-            >
-              <motion.span
-                animate={{
-                  backgroundPosition: ["200% 0%", "0% 0%", "200% 0%"],
-                }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent bg-clip-text text-transparent [background-size:200%_100%]"
-                aria-hidden
-              >
-                Best Quality.
+            <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+              <motion.span variants={titleLine} className="block will-change-transform">
+                Delicious Taste.
               </motion.span>
-              Best Quality.
+            </span>
+            <span className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+              <motion.span variants={titleLine} className="block will-change-transform">
+                <span
+                  className="relative inline-block bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-400 bg-clip-text text-transparent"
+                  style={{ backgroundSize: "200% 100%" }}
+                >
+                  <motion.span
+                    animate={{
+                      backgroundPosition: ["200% 0%", "0% 0%", "200% 0%"],
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent bg-clip-text text-transparent [background-size:200%_100%]"
+                    aria-hidden
+                  >
+                    Best Quality.
+                  </motion.span>
+                  Best Quality.
+                </span>
+              </motion.span>
             </span>
           </motion.h1>
 
@@ -222,6 +274,26 @@ export function Hero() {
         </motion.div>
       </div>
 
+      {/* scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="relative z-10 flex justify-center pb-4"
+      >
+        <motion.div
+          animate={{ y: [0, 7, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          className="flex h-9 w-5 items-start justify-center rounded-full border border-white/25 p-1.5"
+        >
+          <motion.span
+            animate={{ y: [0, 10, 0], opacity: [1, 0.2, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="size-1 rounded-full bg-orange-400"
+          />
+        </motion.div>
+      </motion.div>
+
       {/* stats strip */}
       <div className="relative z-10 border-t border-white/10 bg-black/30 backdrop-blur-md">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 md:grid-cols-4 lg:px-8">
@@ -232,7 +304,8 @@ export function Hero() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ type: "spring", stiffness: 200, damping: 22, delay: i * 0.08 }}
-              className="flex flex-col items-center gap-1 text-center md:items-start"
+              whileHover={{ y: -4 }}
+              className="flex flex-col items-center gap-1 text-center transition-colors md:items-start"
             >
               <span className="text-3xl font-black text-white sm:text-4xl">
                 <AnimatedStat
