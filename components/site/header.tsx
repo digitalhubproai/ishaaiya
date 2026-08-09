@@ -12,6 +12,9 @@ import {
   Search,
   ArrowRight,
   Store,
+  Sparkles,
+  Clock,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,13 +22,68 @@ import {
   CONTACT,
   CATEGORIES,
   MENU_ITEMS,
+  DEALS,
   menuItemSlug,
+  dealSlug,
 } from "@/lib/data";
 import { CATEGORY_ICONS } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
 import { imageFor, LOGO } from "@/lib/images";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 import { useCart } from "@/lib/cart";
+
+function Highlight({ text, q }: { text: string; q?: string }) {
+  if (!q) return <>{text}</>;
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i === -1) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <span className="text-orange-300">{text.slice(i, i + q.length)}</span>
+      {text.slice(i + q.length)}
+    </>
+  );
+}
+
+function ItemCard({
+  item,
+  q,
+  onNavigate,
+}: {
+  item: (typeof MENU_ITEMS)[number];
+  q?: string;
+  onNavigate: () => void;
+}) {
+  return (
+    <Link
+      href={`/item/${menuItemSlug(item)}`}
+      onClick={onNavigate}
+      className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/40 hover:bg-orange-500/[0.07] hover:shadow-lg hover:shadow-orange-500/10"
+    >
+      <Image
+        src={imageFor(item.image)}
+        alt={item.name}
+        width={56}
+        height={56}
+        placeholder="blur"
+        className="size-14 shrink-0 rounded-xl object-cover transition-transform duration-300 group-hover:scale-105"
+      />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-2">
+          <span className="truncate text-[13px] font-bold text-white">
+            <Highlight text={item.name} q={q} />
+          </span>
+          <span className="shrink-0 rounded-full bg-orange-500/10 px-1.5 py-0.5 text-[10px] font-black text-orange-400">
+            Rs. {item.price}
+          </span>
+        </div>
+        <p className="mt-0.5 truncate text-[11px] text-white/35">
+          {item.description}
+        </p>
+      </div>
+    </Link>
+  );
+}
 
 function MegaMenu() {
   const [open, setOpen] = useState(false);
@@ -41,10 +99,23 @@ function MegaMenu() {
 
   const activeItems = MENU_ITEMS.filter((item) => item.category === active).slice(0, 5);
 
+  const activeCount = MENU_ITEMS.filter((item) => item.category === active).length;
+
+  const featured = DEALS[0];
+
   const reset = () => {
     setOpen(false);
     setQuery("");
   };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") reset();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <div
@@ -111,7 +182,7 @@ function MegaMenu() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-[230px_1fr]">
+                <div className="grid grid-cols-[215px_1fr] lg:grid-cols-[215px_1fr_245px]">
                   {/* categories column */}
                   <div
                     className={cn(
@@ -205,29 +276,12 @@ function MegaMenu() {
                           </div>
                           <div className="grid grid-cols-2 gap-2.5">
                             {searchResults.map((item) => (
-                              <Link
+                              <ItemCard
                                 key={item.id}
-                                href={`/item/${menuItemSlug(item)}`}
-                                onClick={reset}
-                                className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/30 hover:bg-white/[0.06]"
-                              >
-                                <Image
-                                  src={imageFor(item.image)}
-                                  alt={item.name}
-                                  width={56}
-                                  height={56}
-                                  placeholder="blur"
-                                  className="size-14 shrink-0 rounded-xl object-cover"
-                                />
-                                <div className="min-w-0">
-                                  <div className="truncate text-[13px] font-bold text-white">
-                                    {item.name}
-                                  </div>
-                                  <div className="mt-0.5 text-xs font-semibold text-orange-400">
-                                    Rs. {item.price}
-                                  </div>
-                                </div>
-                              </Link>
+                                item={item}
+                                q={q}
+                                onNavigate={reset}
+                              />
                             ))}
                           </div>
                           {searchResults.length === 0 && (
@@ -258,34 +312,88 @@ function MegaMenu() {
                           </div>
                           <div className="grid grid-cols-2 gap-2.5">
                             {activeItems.map((item) => (
-                              <Link
+                              <ItemCard
                                 key={item.id}
-                                href={`/item/${menuItemSlug(item)}`}
-                                onClick={reset}
-                                className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/30 hover:bg-white/[0.06]"
-                              >
-                                <Image
-                                  src={imageFor(item.image)}
-                                  alt={item.name}
-                                  width={56}
-                                  height={56}
-                                  placeholder="blur"
-                                  className="size-14 shrink-0 rounded-xl object-cover"
-                                />
-                                <div className="min-w-0">
-                                  <div className="truncate text-[13px] font-bold text-white">
-                                    {item.name}
-                                  </div>
-                                  <div className="mt-0.5 text-xs font-semibold text-orange-400">
-                                    Rs. {item.price}
-                                  </div>
-                                </div>
-                              </Link>
+                                item={item}
+                                onNavigate={reset}
+                              />
                             ))}
                           </div>
+                          {activeCount > activeItems.length && (
+                            <Link
+                              href="/#menu"
+                              onClick={reset}
+                              className="mt-3 flex items-center justify-center gap-1.5 rounded-xl border border-white/10 py-2 text-xs font-bold text-white/50 transition-all duration-200 hover:border-orange-500/40 hover:bg-orange-500/10 hover:text-orange-400"
+                            >
+                              View all {activeCount} items
+                              <ArrowRight className="size-3.5" />
+                            </Link>
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>
+                  </div>
+
+                  {/* featured deal */}
+                  <div className="hidden border-l border-white/10 bg-orange-500/[0.045] p-4 lg:block">
+                    <div className="mb-3 flex items-center gap-2 px-1">
+                      <Sparkles className="size-3.5 text-amber-300" />
+                      <span className="text-[11px] font-black uppercase tracking-[0.2em] text-amber-300">
+                        Chef&apos;s Pick
+                      </span>
+                    </div>
+                    <Link
+                      href={`/item/${dealSlug(featured)}`}
+                      onClick={reset}
+                      className="group block overflow-hidden rounded-2xl border border-orange-500/25 bg-black/30 transition-all duration-300 hover:border-orange-500/60 hover:shadow-xl hover:shadow-orange-500/15"
+                    >
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <Image
+                          src={imageFor(featured.image)}
+                          alt={featured.title}
+                          width={400}
+                          height={250}
+                          placeholder="blur"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                        <span className="absolute left-2.5 top-2.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-lg shadow-orange-500/30">
+                          {featured.tag}
+                        </span>
+                      </div>
+                      <div className="p-3.5">
+                        <h4 className="truncate text-sm font-black text-white">
+                          {featured.title}
+                        </h4>
+                        <p className="mt-1 line-clamp-2 text-[11px] leading-relaxed text-white/45">
+                          {featured.description}
+                        </p>
+                        <div className="mt-3 flex items-center justify-between gap-2 border-t border-white/10 pt-3">
+                          <div>
+                            <span className="block text-[10px] text-white/35 line-through">
+                              Rs. {featured.oldPrice}
+                            </span>
+                            <span className="text-lg font-black leading-none text-orange-400">
+                              Rs. {featured.price}
+                            </span>
+                          </div>
+                          <span className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-orange-500 to-red-500 px-3.5 py-2 text-xs font-bold text-white shadow-lg shadow-orange-500/25 transition-transform group-hover:scale-105">
+                            Order now
+                            <ArrowRight className="size-3.5" />
+                          </span>
+                        </div>
+                        <div className="mt-3 flex items-center justify-between text-[10px] font-medium text-white/40">
+                          <span className="flex items-center gap-1">
+                            <Star className="size-3 fill-amber-400 text-amber-400" />
+                            4.9 (10k+)
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="size-3 text-orange-400" />
+                            30 min delivery
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
                 </div>
 
@@ -342,7 +450,21 @@ function MegaMenu() {
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mobileQuery, setMobileQuery] = useState("");
   const { count, setOpen: setCartOpen } = useCart();
+
+  const mq = mobileQuery.trim().toLowerCase();
+  const mobileSearching = mq.length > 0;
+  const mobileResults = mobileSearching
+    ? MENU_ITEMS.filter((item) => item.name.toLowerCase().includes(mq)).slice(
+        0, 10
+      )
+    : [];
+
+  const closeMobile = () => {
+    setOpen(false);
+    setMobileQuery("");
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -516,24 +638,75 @@ export function SiteHeader() {
                   <X className="size-5" />
                 </Button>
               </div>
-              <nav className="flex flex-col gap-1">
-                {NAV_ITEMS.map((item, i) => (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, x: 24 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + i * 0.06 }}
+              {/* mobile search */}
+              <div className="mb-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 transition-colors focus-within:border-orange-500/40">
+                <Search className="size-4 shrink-0 text-white/40" />
+                <input
+                  type="text"
+                  value={mobileQuery}
+                  onChange={(e) => setMobileQuery(e.target.value)}
+                  placeholder="Search dishes — burger, karahi, broast..."
+                  className="w-full bg-transparent text-sm text-white placeholder:text-white/30 focus:outline-none"
+                />
+                {mobileQuery && (
+                  <button
+                    onClick={() => setMobileQuery("")}
+                    aria-label="Clear search"
+                    className="text-white/40 hover:text-white"
                   >
-                    <Link
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="block rounded-xl px-4 py-3.5 text-lg font-medium text-white/80 transition-colors hover:bg-white/5 hover:text-white"
+                    <X className="size-4" />
+                  </button>
+                )}
+              </div>
+
+              {mobileSearching ? (
+                <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                  <div className="mb-2.5 flex items-center justify-between px-1">
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em] text-orange-400">
+                      {mobileResults.length} result
+                      {mobileResults.length !== 1 && "s"} found
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2.5">
+                    {mobileResults.map((item) => (
+                      <ItemCard
+                        key={item.id}
+                        item={item}
+                        q={mq}
+                        onNavigate={closeMobile}
+                      />
+                    ))}
+                    {mobileResults.length === 0 && (
+                      <div className="flex flex-col items-center gap-2 py-12 text-center">
+                        <Search className="size-8 text-white/15" />
+                        <p className="text-sm text-white/50">
+                          Kuch nahi mila &quot;{mobileQuery}&quot; ke liye. Dusra
+                          naam try karein.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <nav className="flex flex-col gap-1">
+                  {NAV_ITEMS.map((item, i) => (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: 24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.06 }}
                     >
-                      {item.label}
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="block rounded-xl px-4 py-3.5 text-lg font-medium text-white/80 transition-colors hover:bg-white/5 hover:text-white"
+                      >
+                        {item.label}
+                      </Link>
+                    </motion.div>
+                  ))}
+                </nav>
+              )}
               <div className="mt-auto flex flex-col gap-3">
                 <Button
                   asChild
