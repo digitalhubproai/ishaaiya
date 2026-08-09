@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { QtyAddToCart } from "@/components/site/quantity-add-to-cart";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 import { SectionHeading } from "@/components/site/section-heading";
+import { imageFor } from "@/lib/images";
 import {
   CATEGORIES,
   CONTACT,
@@ -141,11 +142,12 @@ export default async function ItemPage(props: PageProps<"/item/[slug]">) {
           <div className="group">
             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-2xl shadow-black/50">
               <Image
-                src={image}
+                src={imageFor(image)}
                 alt={title}
                 width={900}
                 height={640}
                 priority
+                placeholder="blur"
                 className="aspect-[4/3] h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
@@ -262,7 +264,7 @@ export default async function ItemPage(props: PageProps<"/item/[slug]">) {
             </div>
 
             {/* CTAs — all equal height */}
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <QtyAddToCart
                 item={{
                   id: isDeal ? `deal-${deal!.id}` : `menu-${item!.id}`,
@@ -275,12 +277,13 @@ export default async function ItemPage(props: PageProps<"/item/[slug]">) {
                 asChild
                 variant="outline"
                 size="lg"
-                className="gap-2 rounded-xl border-white/20 bg-white/5 px-4 text-white hover:bg-white/10 hover:text-white"
+                className="gap-2 rounded-xl border-white/20 bg-white/5 px-4 text-white hover:bg-white/10 hover:text-white sm:w-auto w-full"
               >
                 <a
                   href={`${CONTACT.whatsappLink}?text=${waText}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="flex justify-center"
                 >
                   <WhatsAppIcon className="size-4" />
                   Order on WhatsApp
@@ -342,14 +345,15 @@ export default async function ItemPage(props: PageProps<"/item/[slug]">) {
                 <Link
                   key={r.id}
                   href={r.href}
-                  className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-500/40 hover:shadow-lg hover:shadow-orange-500/10"
+                  className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-sm transition-all duration-300 card-tilt"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src={r.image}
+                      src={imageFor(r.image)}
                       alt={r.name}
                       width={800}
                       height={500}
+                      placeholder="blur"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

@@ -18,6 +18,7 @@ import { SPRING } from "@/components/motion/reveal";
 import { AddToCartButton } from "@/components/site/add-to-cart";
 import { PromoBanner } from "@/components/site/promo-banner";
 import { CATEGORY_ICONS } from "@/lib/category-icons";
+import { imageFor } from "@/lib/images";
 
 function TiltCard({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -71,7 +72,7 @@ function CategoryBlock({ cat }: { cat: (typeof CATEGORIES)[number] }) {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 reveal-on-scroll">
         <AnimatePresence mode="popLayout">
           {items.map((item, i) => (
             <motion.div
@@ -95,10 +96,11 @@ function CategoryBlock({ cat }: { cat: (typeof CATEGORIES)[number] }) {
                   />
                   <div className="pointer-events-none relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src={item.image}
+                      src={imageFor(item.image)}
                       alt={item.name}
                       width={800}
                       height={500}
+                      placeholder="blur"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

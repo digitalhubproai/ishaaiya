@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { STATS, CONTACT } from "@/lib/data";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 import Image from "next/image";
+import { HERO_IMAGE } from "@/lib/images";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -91,10 +92,11 @@ export function Hero() {
               className="absolute inset-0"
             >
               <Image
-                src="/heroimage.png"
+                src={HERO_IMAGE}
                 alt="Ishaaiya signature plate"
                 fill
                 priority
+                placeholder="blur"
                 className="object-cover object-center"
                 sizes="100vw"
               />

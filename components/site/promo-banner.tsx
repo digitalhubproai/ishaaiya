@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { CONTACT, type PromoBanner } from "@/lib/data";
 import { WhatsAppIcon } from "@/components/site/social-icons";
+import { imageFor } from "@/lib/images";
 
 export function PromoBanner({ banner }: { banner: PromoBanner }) {
   return (
@@ -16,9 +17,10 @@ export function PromoBanner({ banner }: { banner: PromoBanner }) {
       className="group relative flex w-full flex-col justify-center overflow-hidden rounded-3xl border border-orange-500/20 shadow-2xl shadow-black/50"
     >
       <Image
-        src={banner.image}
+        src={imageFor(banner.image)}
         alt={banner.title}
         fill
+        placeholder="blur"
         className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
         sizes="100vw"
       />

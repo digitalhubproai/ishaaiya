@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useCart } from "@/lib/cart";
 import { CONTACT } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { imageFor } from "@/lib/images";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 
 const DELIVERY_FEE = 100;
@@ -388,10 +389,11 @@ const text = encodeURIComponent(
                     >
                       <div className="size-16 shrink-0 overflow-hidden rounded-xl">
                         <Image
-                          src={item.image}
+                          src={imageFor(item.image)}
                           alt={item.name}
                           width={128}
                           height={128}
+                          placeholder="blur"
                           className="h-full w-full object-cover"
                         />
                       </div>

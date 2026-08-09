@@ -11,6 +11,7 @@ import { DEALS, CONTACT, dealSlug } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 import { AddToCartButton } from "@/components/site/add-to-cart";
+import { imageFor } from "@/lib/images";
 
 const SPRING = { type: "spring", stiffness: 220, damping: 28, mass: 1 } as const;
 
@@ -144,10 +145,11 @@ export function DealsSection() {
                       )}
                       <div className="relative aspect-[4/3] shrink-0 overflow-hidden">
                         <Image
-                          src={deal.image}
+                          src={imageFor(deal.image)}
                           alt={deal.title}
                           width={760}
                           height={460}
+                          placeholder="blur"
                           className="h-full w-full object-cover transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#12100d] via-black/20 to-transparent" />

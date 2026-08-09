@@ -23,6 +23,7 @@ import {
 } from "@/lib/data";
 import { CATEGORY_ICONS } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
+import { imageFor, LOGO } from "@/lib/images";
 import { WhatsAppIcon } from "@/components/site/social-icons";
 import { useCart } from "@/lib/cart";
 
@@ -211,10 +212,11 @@ function MegaMenu() {
                                 className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/30 hover:bg-white/[0.06]"
                               >
                                 <Image
-                                  src={item.image}
+                                  src={imageFor(item.image)}
                                   alt={item.name}
                                   width={56}
                                   height={56}
+                                  placeholder="blur"
                                   className="size-14 shrink-0 rounded-xl object-cover"
                                 />
                                 <div className="min-w-0">
@@ -263,10 +265,11 @@ function MegaMenu() {
                                 className="group flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5 transition-all duration-200 hover:border-orange-500/30 hover:bg-white/[0.06]"
                               >
                                 <Image
-                                  src={item.image}
+                                  src={imageFor(item.image)}
                                   alt={item.name}
                                   width={56}
                                   height={56}
+                                  placeholder="blur"
                                   className="size-14 shrink-0 rounded-xl object-cover"
                                 />
                                 <div className="min-w-0">
@@ -364,10 +367,11 @@ export function SiteHeader() {
         <Link href="#home" className="group flex items-center gap-3">
           <div className="relative">
             <Image
-              src="/ishaaiyalogo-cropped.png"
+              src={LOGO}
               alt="Ishaaiya Restaurant & Catering"
               width={56}
               height={56}
+              placeholder="blur"
               className="size-14 object-contain drop-shadow-[0_2px_12px_rgba(255,120,20,0.35)] transition-transform duration-300 group-hover:scale-105"
               priority
             />
@@ -494,10 +498,11 @@ export function SiteHeader() {
               <div className="mb-10 flex items-center justify-between">
                 <span className="flex items-center gap-3">
                   <Image
-                    src="/ishaaiyalogo-cropped.png"
+                    src={LOGO}
                     alt="Ishaaiya logo"
                     width={48}
                     height={48}
+                    placeholder="blur"
                     className="size-12 object-contain"
                   />
                 </span>

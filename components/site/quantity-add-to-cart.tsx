@@ -9,7 +9,7 @@ export function QtyAddToCart({ item }: { item: CartItem }) {
   const [qty, setQty] = useState(1);
 
   return (
-    <div className="flex w-fit shrink-0 items-stretch gap-2">
+    <div className="flex w-full items-stretch justify-between gap-2 sm:w-fit">
       <div className="flex h-12 shrink-0 items-center justify-between gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-1">
         <button
           type="button"

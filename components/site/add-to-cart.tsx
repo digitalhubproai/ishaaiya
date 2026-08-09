@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, ShoppingBag } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useCart, type CartItem } from "@/lib/cart";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,9 @@ export function AddToCartButton({
     add(item, quantity);
     setCartOpen(true);
     setAdded(true);
+    toast.success(`${item.name} added to cart`, {
+      position: "top-center",
+    });
     setTimeout(() => setAdded(false), 1200);
   };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { imageFor } from "@/lib/images";
 import { motion } from "framer-motion";
 import type { ComponentType } from "react";
 import { Snowflake, Bike, MessageCircle, Utensils } from "lucide-react";
@@ -36,29 +37,32 @@ export function AboutSection() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="overflow-hidden rounded-3xl">
                   <Image
-                    src="/images/karahi.jpg"
+                    src={imageFor("/images/karahi.jpg")}
                     alt="Fresh desi karahi"
                     width={600}
                     height={700}
+                    placeholder="blur"
                     className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
                   />
                 </div>
                 <div className="space-y-4">
                   <div className="overflow-hidden rounded-3xl">
                     <Image
-                      src="/images/biryani.jpg"
+                      src={imageFor("/images/biryani.jpg")}
                       alt="Aromatic biryani"
                       width={600}
                       height={500}
+                      placeholder="blur"
                       className="h-52 w-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                   </div>
                   <div className="overflow-hidden rounded-3xl">
                     <Image
-                      src="/images/shawarma.jpg"
+                      src={imageFor("/images/shawarma.jpg")}
                       alt="Loaded shawarma"
                       width={600}
                       height={500}
+                      placeholder="blur"
                       className="h-40 w-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                   </div>

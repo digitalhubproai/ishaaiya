@@ -10,6 +10,7 @@ import {
   WhatsAppIcon,
 } from "@/components/site/social-icons";
 import { NAV_ITEMS, CATEGORIES, CONTACT } from "@/lib/data";
+import { LOGO } from "@/lib/images";
 
 const SOCIALS = [
   { icon: WhatsAppIcon, href: CONTACT.whatsappLink, label: "WhatsApp" },
@@ -26,10 +27,11 @@ export function SiteFooter() {
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-3">
               <Image
-                src="/ishaaiyalogo-cropped.png"
+                src={LOGO}
                 alt="Ishaaiya Restaurant & Catering"
                 width={56}
                 height={56}
+                placeholder="blur"
                 className="size-14 object-contain"
               />
             </div>

@@ -1,0 +1,24 @@
+{
+  "name": "Ishaaiya Restaurant & Catering",
+  "short_name": "Ishaaiya",
+  "description": "BBQ, Desi, Fast Food, Chinese & Tandoor — order on WhatsApp for quick home delivery.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0b09",
+  "theme_color": "#0d0b09",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/ishaaiyalogo-cropped.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/ishaaiyalogo-cropped.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
